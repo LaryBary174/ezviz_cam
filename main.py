@@ -7,6 +7,10 @@ def check_connection(port='/dev/ttyACM0', baudrate=115200):
         with serial.Serial(port, baudrate, timeout=0.5) as ser:
             ser.dtr = True
             ser.rts = True
+            time.sleep(1)
+            print("Выводим дрон из режима CLI...")
+            ser.write(b'exit\r\n')
+            ser.flush()
             time.sleep(2)
 
             # 2. Жестко очищаем буферы приема и передачи от старого мусора
