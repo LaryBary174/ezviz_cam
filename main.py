@@ -2,7 +2,7 @@ import serial
 import time
 import struct
 
-def check_connection(port='/dev/ttyUSB0', baudrate=115200):
+def check_connection(port='/dev/ttyACM0', baudrate=115200):
     try:
         with serial.Serial(port, baudrate, timeout=0.5) as ser:
             time.sleep(2)
@@ -54,7 +54,7 @@ def send_msp_command(ser, cmd_code, payload=b''):
 
 # Переносим исполняемый код в блок __main__
 if __name__ == "__main__":
-    SERIAL_PORT = '/dev/ttyUSB0'  # замените на ваш порт (на Windows обычно 'COM3' и т.д.)
+    SERIAL_PORT = '/dev/ttyACM0'  # замените на ваш порт (на Windows обычно 'COM3' и т.д.)
 
     print("--- Проверка соединения ---")
     check_connection(SERIAL_PORT)
