@@ -5,10 +5,16 @@ import struct
 def check_connection(port='/dev/ttyUSB0', baudrate=115200):
     try:
         with serial.Serial(port, baudrate, timeout=0.5) as ser:
+            time.sleep(2)
+
+            # 2. Жестко очищаем буферы приема и передачи от старого мусора
+            ser.reset_input_buffer()
+            ser.reset_output_buffer()
             # Отправляем MSP_STATUS (код 101)
             # Пакет: $ M < [len=0] [code=101/0x65] [crc=101/0x65]
             packet = b'$M<\x00\x65\x65'  # Исправлен '0' на '\x00'
             ser.write(packet)
+            ser.flush()
 
             # Читаем ответ (с запасом, так как статус бывает длинным)
             response = ser.read(50)
