@@ -5,6 +5,8 @@ import struct
 def check_connection(port='/dev/ttyACM0', baudrate=115200):
     try:
         with serial.Serial(port, baudrate, timeout=0.5) as ser:
+            ser.dtr = True
+            ser.rts = True
             time.sleep(2)
 
             # 2. Жестко очищаем буферы приема и передачи от старого мусора
@@ -54,6 +56,7 @@ def send_msp_command(ser, cmd_code, payload=b''):
 
 # Переносим исполняемый код в блок __main__
 if __name__ == "__main__":
+
     SERIAL_PORT = '/dev/ttyACM0'  # замените на ваш порт (на Windows обычно 'COM3' и т.д.)
 
     print("--- Проверка соединения ---")
@@ -62,6 +65,9 @@ if __name__ == "__main__":
     print("\n--- Отправка команды MSP_IDENT ---")
     try:
         with serial.Serial(SERIAL_PORT, 115200, timeout=1) as ser:
+            ser.dtr = True
+            ser.rts = True
+
             send_msp_command(ser, 100)  # MSP_IDENT
 
             # Ответ на MSP_IDENT обычно занимает минимум 13 байт
